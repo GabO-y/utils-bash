@@ -6,16 +6,31 @@ cmd_convert() {
         return 0
     fi
 
-    [[ $# -lt 2 ]] && die "Uso: utils convert <arquivo> <formato>"
+    [[ $# -lt 2 ]] && die "Uso: utils convert <arquivo> <formato> [-o <nome>]"
 
     local input="$1"
     local format="$2"
+    local output_name=""
+    shift 2
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -o) shift; output_name="$1" ;;
+            *) die "Argumento desconhecido: $1" ;;
+        esac
+        shift
+    done
 
     [[ ! -f "$input" ]] && die "Arquivo não encontrado: $input"
 
     local basename="${input%.*}"
     local ext="${input##*.}"
-    local output="${basename}.${format}"
+
+    if [[ -n "$output_name" ]]; then
+        local output="${output_name}.${format}"
+    else
+        local output="${basename}.${format}"
+    fi
 
     [[ "$ext" == "$format" ]] && die "O arquivo já está no formato $format."
 
@@ -58,7 +73,7 @@ cmd_convert() {
 
 show_convert_help() {
     cat <<EOF
- Uso: utils convert <arquivo> <formato>
+ Uso: utils convert <arquivo> <formato> [-o <nome>]
 
  Converte arquivos entre formatos.
 
@@ -68,9 +83,14 @@ show_convert_help() {
    Vídeo:     mp4, mov, avi, mkv, webm  (ffmpeg)
    Documento: pdf, html, docx, epub, odt (pandoc)
 
+ Opções:
+   -o <nome>    Nome personalizado para o arquivo de saída
+
  Exemplos:
    utils convert video.mp4 mp3
+   utils convert video.mp4 mp3 -o audio
    utils convert doc.md pdf
+   utils convert doc.md pdf -o relatorio
    utils convert doc.md html
 
 EOF

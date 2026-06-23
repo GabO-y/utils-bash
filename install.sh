@@ -22,7 +22,7 @@ echo "Instalação concluída!"
 echo
 echo "--- Dependências ---"
 missing_deps=0
-for dep in ffmpeg pandoc yt-dlp; do
+for dep in ffmpeg pandoc yt-dlp convert zip unzip; do
     if command -v "$dep" &>/dev/null; then
         info "$dep: OK"
     else
@@ -40,6 +40,13 @@ elif ! kpsewhich xcolor.sty &>/dev/null; then
     error "Pacotes LaTeX adicionais necessários para gerar PDF."
     warn "  $(pkg_suggest texlive-extra)"
     missing_deps=1
+fi
+
+if command -v 7z &>/dev/null; then
+    info "7z: OK"
+else
+    warn "7z: não encontrado (opcional, necessário apenas para formato 7z)"
+    warn "  $(pkg_suggest 7z)"
 fi
 
 if [[ $missing_deps -eq 0 ]]; then

@@ -56,6 +56,10 @@ pkg_suggest() {
         ffmpeg)   echo "$pkg_install ffmpeg" ;;
         pandoc)   echo "$pkg_install pandoc" ;;
         yt-dlp)   echo "$pkg_install yt-dlp" ;;
+        convert)  echo "$pkg_install imagemagick" ;;
+        zip)      echo "$pkg_install zip" ;;
+        unzip)    echo "$pkg_install unzip" ;;
+        7z)       echo "$pkg_install p7zip-full" ;;
         texlive-extra)
             case "$pkg_install" in
                 *pacman*) echo "$pkg_install texlive-core" ;;
@@ -85,13 +89,20 @@ show_help() {
 
  Comandos:
 
-   convert <arquivo> <formato>
-       Converte arquivos entre formatos.
-       'utils convert --help' para detalhes.
+    convert <arquivo> <formato> [-o <nome>]
+        Converte arquivos entre formatos.
 
-   download [-youtube <url>] [-mp3]
-       Baixa mídia da internet.
-       'utils download --help' para detalhes.
+    download -youtube <url> [-mp3] [-o <nome>]
+        Baixa mídia da internet.
+
+    resize <imagem> <dimensão> [-o <nome>]
+        Redimensiona imagens (ImageMagick).
+
+    compress <origem> <formato> [-o <nome>]
+        Compacta arquivos/pastas (tar.gz, zip, ...).
+
+    extract <arquivo> [-o <destino>]
+        Extrai arquivos compactados.
 
    help, -h, --help
        Mostra esta mensagem.

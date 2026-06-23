@@ -22,6 +22,18 @@ case "$COMMAND" in
         source "$SCRIPT_DIR/modules/download.sh"
         cmd_download "$@"
         ;;
+    resize)
+        source "$SCRIPT_DIR/modules/resize.sh"
+        cmd_resize "$@"
+        ;;
+    compress)
+        source "$SCRIPT_DIR/modules/compress.sh"
+        cmd_compress "$@"
+        ;;
+    extract)
+        source "$SCRIPT_DIR/modules/extract.sh"
+        cmd_extract "$@"
+        ;;
     help|-h|--help)
         show_help
         ;;
