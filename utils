@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+
+source "$SCRIPT_DIR/lib/common.sh"
+
+if [[ $# -eq 0 ]]; then
+    show_help
+    exit 0
+fi
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+    convert)
+        source "$SCRIPT_DIR/modules/convert.sh"
+        cmd_convert "$@"
+        ;;
+    download)
+        source "$SCRIPT_DIR/modules/download.sh"
+        cmd_download "$@"
+        ;;
+    help|-h|--help)
+        show_help
+        ;;
+    *)
+        error "Comando desconhecido: $COMMAND"
+        echo
+        show_help
+        exit 1
+        ;;
+esac
