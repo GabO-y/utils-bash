@@ -104,6 +104,9 @@ show_help() {
     extract <arquivo> [-o <destino>]
         Extrai arquivos compactados.
 
+    code-template <template> [nome] [-f]
+        Cria um projeto a partir de um template.
+
    help, -h, --help
        Mostra esta mensagem.
 

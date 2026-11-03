@@ -10,6 +10,10 @@ cd utils-bash
 ./install.sh
 ```
 
+O instalador também cria `~/.config/utils-bash/config.sh` se ele ainda não existir.
+
+Ele detecta o shell de login (bash ou zsh) e, se necessário, adiciona o diretório de instalação ao `PATH` no `.bashrc`/`.zshrc`, criando um backup do arquivo antes de editá-lo. Para outros shells, o instalador apenas indica o diretório que deve ser adicionado ao `PATH`.
+
 ### Dependências
 
 | Funcionalidade | Pacote |
@@ -20,6 +24,7 @@ cd utils-bash
 | Redimensionar imagens | imagemagick |
 | Compactar/extrair zip | zip / unzip |
 | Compactar/extrair 7z | p7zip-full (opcional) |
+| Templates de projeto | nenhuma (usa cp) |
 
 ## Uso
 
@@ -69,6 +74,35 @@ utils extract arquivo.zip
 utils extract arquivo.tar.gz -o destino/
 ```
 
+### Criar projeto a partir de template
+
+Os templates ficam em `~/CodeTemplates` por padrão. Crie uma pasta para cada template:
+
+```bash
+mkdir -p ~/CodeTemplates/C
+# coloque os arquivos do template dentro dela
+
+utils code-template C
+utils code-template C meu-projeto
+utils code-template C ~/projetos/meu-projeto
+utils code-template --list
+```
+
+Sem nome de projeto, o destino é `./new-project-<template>` (em minúsculas).
+Se o destino não estiver vazio, use `-f` para sobrescrever.
+
+Configuração em `~/.config/utils-bash/config.sh`:
+
+```bash
+: "${CODE_TEMPLATE_DIR:=$HOME/CodeTemplates}"
+```
+
+A variável de ambiente tem prioridade:
+
+```bash
+CODE_TEMPLATE_DIR=~/meus-templates utils code-template C
+```
+
 ### Ajuda
 
 ```bash
@@ -78,6 +112,7 @@ utils download --help
 utils resize --help
 utils compress --help
 utils extract --help
+utils code-template --help
 ```
 
 ## Adicionar novos comandos
@@ -87,7 +122,7 @@ utils extract --help
 3. Adicione um `case` no `utils`:
 
 ```bash
-meucomando) shift; source "$DIR/modules/meucomando.sh"; cmd_meucomando "$@" ;;
+meucomando) shift; source "$SCRIPT_DIR/modules/meucomando.sh"; cmd_meucomando "$@" ;;
 ```
 
 ## Estrutura do projeto
@@ -97,13 +132,15 @@ utils-bash/
 ├── utils              # Entry point principal
 ├── install.sh         # Script de instalação
 ├── lib/
-│   └── common.sh      # Funções compartilhadas
+│   ├── common.sh      # Funções compartilhadas
+│   └── config.sh      # Configuração do usuário
 ├── modules/
-│   ├── convert.sh     # Conversão de arquivos
-│   ├── download.sh    # Download de mídias
-│   ├── resize.sh      # Redimensionamento de imagens
-│   ├── compress.sh    # Compactação de arquivos
-│   └── extract.sh     # Extração de arquivos
+│   ├── convert.sh       # Conversão de arquivos
+│   ├── download.sh      # Download de mídias
+│   ├── resize.sh        # Redimensionamento de imagens
+│   ├── compress.sh      # Compactação de arquivos
+│   ├── extract.sh       # Extração de arquivos
+│   └── code-template.sh # Templates de projeto
 └── README.md
 ```
 

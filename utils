@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 
 source "$SCRIPT_DIR/lib/common.sh"
+source "$SCRIPT_DIR/lib/config.sh"
 
 if [[ $# -eq 0 ]]; then
     show_help
@@ -33,6 +34,10 @@ case "$COMMAND" in
     extract)
         source "$SCRIPT_DIR/modules/extract.sh"
         cmd_extract "$@"
+        ;;
+    code-template)
+        source "$SCRIPT_DIR/modules/code-template.sh"
+        cmd_code_template "$@"
         ;;
     help|-h|--help)
         show_help
